@@ -1,7 +1,8 @@
 import type { Country, Currency, Payment } from "@/shared/types/common.types"
 import styles from '@/features/payment-results/ui/PaymentResult.module.css'
 import stylesCommon from '@/shared/styles/common.module.css'
-import { motion } from 'framer-motion'
+import { AnimateOnMount } from "@/shared/ul/UseAnimatePages/ui/useAnimatePagesElement"
+
 
 export type PaymentPropsType = {
     createNewPayment: () => void,
@@ -12,12 +13,7 @@ export type PaymentPropsType = {
 
 export const PaymentResult = ({createNewPayment,country, currency, payment}: PaymentPropsType) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}  
-            animate={{ opacity: 1, y: 0 }}  
-            exit={{ opacity: 0, y: -20 }}     
-            transition={{ duration: 0.3 }}    
-            >
+    <AnimateOnMount>
              <section className={styles.results__wrapper}>
                     <div className={styles.results__wrapper_items}>  
                         <div className={styles.results__wrapper_item}>
@@ -36,8 +32,7 @@ export const PaymentResult = ({createNewPayment,country, currency, payment}: Pay
                 
                 
             </section>
-
-        </motion.div>
+        </AnimateOnMount>
       
     )
 }

@@ -1,6 +1,4 @@
-.form__item_wrapper {
-    position: relative;
-}
+
 .payment__title {
     font-weight: 400;
     margin-top: 0;
@@ -30,61 +28,10 @@
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
 }
-.payment__option_label {
-    margin-bottom: var(--label-margin-bottom);
-    display: inline-block;
-    font-size: var(--fz-sub-text);
-}
-.payment__option_active {
-    cursor: pointer;
-}
-.payment__option_select {
-    font-size: var(--select-target-size);
-    position: relative;
-    width: 100%;
-    height: 40px;
-    background-color: #ffffff0a;
-    padding: 0 15px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    appearance: none;    
-    -webkit-appearance: none; 
-    -moz-appearance: none; 
-}
 
 
-section.form__item_wrapper::after {
-  content: ""; 
-  height: var(--select-arrow-height); 
-  width: var(--select-arrow-width);
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
+ 
 
-  background-image: url('/src/assets/arrow.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 1;
-  transition: transform .5s ease ;
-  transform: translateY(-50%) rotate(180deg);
-}
-.payment__option_show::after {
-  transform: translateY(-50%) rotate(0) !important;
-}
-
-.payment__option_select::-ms-expand {
-  display: none;
-}
-
-.payment__option_select option {
-    background-color: #242424; 
-    cursor: pointer;
-    color: #fff;                 
-}
 .payment__wrapper {
     position: relative;
     width: 100%;

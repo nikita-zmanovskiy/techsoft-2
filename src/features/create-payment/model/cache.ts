@@ -14,7 +14,7 @@ class MemoryCache {
         this.cache = new Map()  
     }
 
-    set<T>(key: string, data: T) {
+    set<T>(key: string, data: T):void {
         this.cache.set(key, {
             data,
             timestamp: Date.now()
@@ -36,11 +36,11 @@ class MemoryCache {
         return entry.data as T
     }
 
-    has(key: string) {
+    has(key: string):boolean {
         return this.cache.has(key)
     }
 
-    delete(key: string) {
+    delete(key: string):boolean {
         return this.cache.delete(key)
     }
 }

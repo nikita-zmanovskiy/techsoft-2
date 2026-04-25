@@ -6,7 +6,8 @@ type Currency = {
 }
 
 type PaymentMethod = {
-    transferType: string
+    name: string
+    code: string
 }
 
 
@@ -27,16 +28,16 @@ const countryCurrences:CountryCurrencies = {
 },
     paymentCurrences:PaymentCurrencies = {
         USD: [
-            {transferType: 'Bank Account'},
-            {transferType: 'PayPal'},
+            {name: 'Bank Account', code: 'Bank Account'},
+            {name: 'PayPal', code: 'PayPal'},
         ],
         EUR: [
-            {transferType: 'SEPA Transfer'},
-            {transferType: 'Payoneer'},
+            {name: 'SEPA Transfer', code: 'SEPA Transfer'},
+            {name: 'Payoneer', code: 'Payoneer'},
         ],
         GBP: [
-            {transferType: 'Wise'},
-            {transferType: 'UK Bank Transfer'},
+            {name: 'Wise', code: 'Wise'},
+            {name: 'UK Bank Transfer', code: 'UK Bank Transfer'},
         ]
     },
     countries:Country[] = [
@@ -46,7 +47,7 @@ const countryCurrences:CountryCurrencies = {
     ]
 
 
-export const fetchAvailableCountries = () => new Promise(
+export const fetchAvailableCountries = ():Promise<unknown> => new Promise(
     (resolve) => {
         setTimeout(() => {
             const available:Country[] = countries
@@ -54,7 +55,7 @@ export const fetchAvailableCountries = () => new Promise(
         }, 1500)
     }
 )
-export const fetchAvailableCurrences = (countryCode: string) => new Promise(
+export const fetchAvailableCurrences = (countryCode: string):Promise<unknown> => new Promise(
     (resolve) => {
         setTimeout(() => {
             const available:Currency[] = countryCurrences[countryCode]
@@ -62,7 +63,7 @@ export const fetchAvailableCurrences = (countryCode: string) => new Promise(
         }, 1500)
     }
 )
-export const fetchAvailablePayments = (currencyCode: string) => new Promise(
+export const fetchAvailablePayments = (currencyCode: string):Promise<unknown> => new Promise(
     (resolve) => {
         setTimeout(() => {
             const available:PaymentMethod[] = paymentCurrences[currencyCode]

@@ -12,8 +12,19 @@ type UsedElementsFromStore = {
 }
 type NewPayment = () => void
 
+type PaymentDetail = {
+    name: string | null;
 
-export const usePaymentResults = () => {
+}
+
+export type PaymentResultsReturn = {
+    createNewPayment: () => void;
+    country: PaymentDetail;
+    currency: PaymentDetail;
+    payment: PaymentDetail;
+}
+
+export const usePaymentResults = ():PaymentResultsReturn => {
     const navigate = useNavigate(),
         urlParams:UrlParams = new UrlParams()
         
@@ -32,7 +43,7 @@ export const usePaymentResults = () => {
 
     const createNewPayment: NewPayment = () => handleToHome()
 
-    useEffect(() => {
+    useEffect(():void => {
         if(!country || !currency || !payment) {
             if(!paramsCountry || !paramsCurriency || !paramsPayment) handleToHome()
         } 

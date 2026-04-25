@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react"
+import type { GlobalLoaderProps } from "../ui/GlobalLoader"
 
-const useGlobalLoader = () => {
+const useGlobalLoader = ():GlobalLoaderProps => {
 
-    const [isHide, setIsHide] = useState(false),
-        [isLoading, setIsLoading] = useState(true)
+    const [isHide, setIsHide] = useState<boolean>(false),
+        [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
             let timeoutId: ReturnType<typeof setTimeout> | null = null
-            const startTime = Date.now() 
+            const startTime:number = Date.now() 
             
-            const finishLoading = () => {
-                const elapsed = Date.now() - startTime
-                const remaining = Math.max(0, 1000 - elapsed)
+            const finishLoading = ():void => {
+                const elapsed:number = Date.now() - startTime
+                const remaining:number = Math.max(0, 1000 - elapsed)
                 
-                setTimeout(() => {
+                setTimeout(():void => {
                     setIsLoading(false)
-                    timeoutId = setTimeout(() => {
+                    timeoutId = setTimeout(():void => {
                         setIsHide(true)
                     }, 500)
                 }, remaining)
             }
             
-            const checkReady = () => {
+            const checkReady = (): (() => void) | undefined => {
                 const isAppReady: boolean = document.readyState === 'complete'
                 
                 if (isAppReady) {
@@ -38,7 +39,7 @@ const useGlobalLoader = () => {
                 }
             }
             
-            const cleanup = checkReady()
+            const cleanup: (() => any) | undefined = checkReady()
             
             return () => {
                 if (cleanup) cleanup()

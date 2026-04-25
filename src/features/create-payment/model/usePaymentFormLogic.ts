@@ -13,18 +13,44 @@ export const cache:MemoryCacheInstant = new MemoryCache()
 export const COUNTRIES_CACHE_KEY:string = 'CountriesCache'
 
 type availablePayment = {
-    transferType: string
+    name: string
+    code: string
+}
+export type PaymentFormLogicReturn = {
+    availableCountries: Country[] | null
+    availableCurrences: Currency[] | null
+    availablePayments: availablePayment[] | null
+
+    handleChangeCountry: (e: React.ChangeEvent<HTMLSelectElement>) => Promise<void>
+    handleChangePayment: (e: React.ChangeEvent<HTMLSelectElement>) => Promise<void>
+    handleChangeTransfer: (e: React.ChangeEvent<HTMLSelectElement>) => void
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+
+    selectedCountry: string | null
+    selectedPayment: string | null
+    selectedTransfer: string | null
+
+    isCoutnriesLoading: boolean | null
+    isCurrencesLoading: boolean | null
+    isPaymentsLoading: boolean | null
+
+    isCountriesSelect: boolean
+    setIsCountriesSelect: React.Dispatch<React.SetStateAction<boolean>>
+    isCurrencesSelect: boolean
+    setIsCurrencesSelect: React.Dispatch<React.SetStateAction<boolean>>
+    isPaymentsSelect: boolean
+    setIsPaymentsSelect: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
-export const usePaymentFormLogic = () => {
+export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
     const [availablePayments, setAvailablePayments] = useState<availablePayment[] | null>(null),
          [availableCurrences, setAvailableCurrences] = useState<Currency[] | null>(null),
          [availableCountries, setAvailableCountries] = useState<Country[] | null>(null)
 
-    const [selectedCountry, setSelectedCountry] = useState<string | null>(null),
-        [selectedPayment, setSelectedPayment] = useState<string | null>(null),
-        [selectedTransfer, setSelectedTransfer] = useState<string | null>(null)
+    const [selectedCountry, setSelectedCountry] = useState<any | null>(null),
+        [selectedPayment, setSelectedPayment] = useState<any | null>(null),
+        [selectedTransfer, setSelectedTransfer] = useState<any | null>(null)
 
     const [isCurrencesLoading, setIsCurrencesLoading] = useState<boolean | null>(false),
         [isPaymentsLoading, setIsPaymentsLoading] = useState<boolean | null>(false),
@@ -33,8 +59,6 @@ export const usePaymentFormLogic = () => {
     const [isCountriesSelect, setIsCountriesSelect] = useState<boolean>(false),
          [isPaymentsSelect, setIsPaymentsSelect] = useState<boolean>(false),
         [isCurrencesSelect, setIsCurrencesSelect] = useState<boolean>(false)
-
-
 
 
     useEffect(():void => {
@@ -47,7 +71,7 @@ export const usePaymentFormLogic = () => {
                 } else {
                     const response:unknown = await fetchAvailableCountries()
                     if(Array.isArray(response)) {
-                        const countries = response as Country[]
+                        const countries:Country[] = response as Country[]
                         setAvailableCountries(countries)
                         cache.set(COUNTRIES_CACHE_KEY, countries)
                     }
@@ -64,7 +88,6 @@ export const usePaymentFormLogic = () => {
             } finally {
                 setIsCountriesLoading(false)
             }
-          
         }
         getInitionalCountries()
     }, [])
@@ -73,25 +96,41 @@ export const usePaymentFormLogic = () => {
     const {setForm}:storeFunc = usePaymentFormStore(),
         navigate = useNavigate()
 
-
-
-
     const handleClearAll = ():void => {
         setSelectedCountry(null)
         setSelectedPayment(null)
         setSelectedTransfer(null)
     }
 
+    
 
-    const handleChangeCountry = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        e.target.blur()
+
+    const handleChangeCountry = async (e: React.ChangeEvent<HTMLSelectElement>):Promise<void>  => {
+        if(!availableCountries || isCoutnriesLoading) return 
+        
+        const countryCode:string | null = e.currentTarget.getAttribute('data-value')
+        if(selectedCountry && selectedCountry.code === countryCode) {
+            setIsCountriesSelect(false)
+            return
+        } 
+        if (!countryCode) {
+            console.error("Код страны не найден")
+            return
+        } 
+        const findCountry: Country | undefined = availableCountries?.find((country) => country.code === countryCode)
+
+        
+
+
+        setIsCountriesSelect(false)
         handleClearAll()
-        const countryCode:string = e.target.value
-        setSelectedCountry(countryCode)
+        
+        
+
+        setSelectedCountry({code: countryCode, name: findCountry?.name})
         setIsCurrencesLoading(true)
         try {
             const responce:unknown = await fetchAvailableCurrences(countryCode)
-
             if(Array.isArray(responce)) { 
                 setAvailableCurrences(responce)
             }
@@ -105,17 +144,27 @@ export const usePaymentFormLogic = () => {
         } finally {
             setIsCurrencesLoading(false)
         }
-        
-        
-        
     }
 
-    const handleChangePayment = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        e.target.blur()
+    const handleChangePayment = async (e: React.ChangeEvent<HTMLSelectElement>):Promise<void> => {
+        if(!selectedCountry || isCurrencesLoading) return 
+        
+        const countryCode:string | null = e.currentTarget.getAttribute('data-value')
+        if(selectedPayment && selectedPayment.code === countryCode) {
+            setIsCurrencesSelect(false)
+            return
+        } 
+       
+        if (!countryCode) {
+            console.error("Код страны не найден")
+            return
+        } 
+        setIsCurrencesSelect(false)
         setSelectedTransfer(null)
 
-        const countryCode:string = e.target.value
-        setSelectedPayment(countryCode)
+        const findCurrency:Currency | undefined = availableCurrences?.find((currency) => currency.code === countryCode)
+
+        setSelectedPayment({code: countryCode, name: findCurrency?.name})
 
         setIsPaymentsLoading(true)
         try {
@@ -137,24 +186,31 @@ export const usePaymentFormLogic = () => {
     }
 
 
-    const handleChangeTransfer = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        e.target.blur()
-        const countryCode:string = e.target.value
-        setSelectedTransfer(countryCode)
+    const handleChangeTransfer = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        if(!selectedCountry || !selectedPayment || isPaymentsLoading) return 
+        const countryCode:string | null = e.currentTarget.getAttribute('data-value')
+        if(selectedTransfer && selectedTransfer.code === countryCode) { 
+            setIsPaymentsSelect(false)
+            return
+        }
+
+        const findCurrency:availablePayment | undefined = availablePayments?.find((payment) => payment.code === countryCode)
+        setSelectedTransfer({code: countryCode, name: findCurrency?.name})
+        setIsPaymentsSelect(false)
     }
 
-    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void => {
         e.preventDefault()
-        if(selectedCountry && selectedPayment && selectedTransfer && availableCountries && availableCurrences) {
+        if(selectedCountry.code && selectedPayment.code && selectedTransfer && availableCountries && availableCurrences) {
           
             
-            const findCountry: Country | null = availableCountries.find((country) => country.code === selectedCountry) || null,
-                 findCurrency:Currency | null = availableCurrences.find((payment: any) => payment.code === selectedPayment) || null
+            const findCountry: Country | null = availableCountries.find((country) => country.code === selectedCountry.code) || null,
+                 findCurrency:Currency | null = availableCurrences.find((payment: any) => payment.code === selectedPayment.code ) || null
 
             if(findCountry && findCurrency) {
-                setForm({name: findCountry.name,code: selectedCountry}, 
-                {name: findCurrency.name, code: selectedPayment}, 
-                {name: selectedTransfer, code: selectedTransfer})
+                setForm({name: findCountry.name,code: selectedCountry.code}, 
+                {name: findCurrency.name, code: selectedPayment.code}, 
+                {name: selectedTransfer.name, code: selectedTransfer.code})
                 const urlParams:UrlParams = new UrlParams()
                 urlParams.set('country', findCountry.name)
                 urlParams.set('currency', findCurrency.name)
@@ -169,8 +225,8 @@ export const usePaymentFormLogic = () => {
     
     return {availableCountries, handleChangeCountry,
         availablePayments, availableCurrences, handleChangePayment,
-        handleChangeTransfer, selectedCountry, selectedPayment, 
-        selectedTransfer, handleSubmit, isPaymentsLoading,
+        handleChangeTransfer, selectedCountry: selectedCountry ? selectedCountry.name : null, selectedPayment: selectedPayment ? selectedPayment.name : null, 
+        selectedTransfer: selectedTransfer ? selectedTransfer.name : null, handleSubmit, isPaymentsLoading,
         isCurrencesLoading, isCoutnriesLoading, isCountriesSelect, setIsCountriesSelect,
         isCurrencesSelect, setIsCurrencesSelect, isPaymentsSelect, setIsPaymentsSelect
     }
