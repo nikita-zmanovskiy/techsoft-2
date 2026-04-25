@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+     <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; img-src 'self' data: blob: https:; font-src 'self' https://gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:8000 http://localhost:8000 http://127.0.0.1:3000 http://localhost:3000 ws://127.0.0.1:3000 ws://localhost:3000 wss://127.0.0.1:3000 wss://localhost:3000 https: wss:;"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link 
+      rel="preload" 
+      as="style" 
+      href="https://googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    >
+    <link 
+      rel="stylesheet" 
+      href="https://googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" 
+      media="print" 
+      onload="this.media='all'"
+    >
+    <noscript>
+      <link rel="stylesheet" href="https://googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+    </noscript>
+     <meta
+      name="description"
+      content="Сайт с платежами"
+    />
+    <title>PAYMENT</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

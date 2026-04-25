@@ -1,0 +1,10 @@
+.notfound__wrapper {
+    text-align: center;
+}
+.notfound__title {
+    font-size: var(--page-not-found-title-size);
+    margin-bottom: 20px;
+}
+.notfound__link {
+    color: var(--sub-text);
+}

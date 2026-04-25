@@ -1,0 +1,108 @@
+:root {
+  --title-size: 25px;
+  --sub-text: #adadad;
+  --select-target-size: 14px;
+  --hole-width: 100%;
+  --fz-sub-text: 14px;
+  --hole-height: 80px;
+
+  --select-arrow-height: 20px;
+  --select-arrow-width: 20px;
+
+  --button-common-size: 14px;
+  --label-margin-bottom: 10px;
+
+  --results-selected-items: #00d5ff;
+  --regular-text: "Roboto", sans-serif;
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --loading-size-height: 20px;
+  --loading-size-width: 20px;
+  --loading-size-text: 13px;
+
+  --result-payment-title-size: 16px;
+
+  --page-not-found-title-size: 30px; 
+
+  --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+  @media (max-width: 500px) {
+     --title-size: 20px;
+     --fz-sub-text: 12px;
+     --select-target-size: 12px;
+     --label-margin-bottom: 5px;
+     --select-arrow-height: 15px;
+    --select-arrow-width: 15px;
+    --button-common-size: 12px;
+    --loading-size-height: 15px;
+      --loading-size-width: 15px;
+     --loading-size-text: 11px;
+     --result-payment-title-size: 14px;
+     --page-not-found-title-size: 25px;
+    
+    }
+  @media (max-width: 360px) {
+     --title-size: 18px;
+     --fz-sub-text: 10px;
+     --select-target-size: 10px;
+     --label-margin-bottom: 0px;
+      --select-arrow-height: 10px;
+    --select-arrow-width: 10px;
+    --button-common-size: 10px;
+      --loading-size-height: 10px;
+      --loading-size-width: 10px;
+       --result-payment-title-size: 12px;
+
+  }
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+
+ 
+}
+.container {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+}
+.container > div {
+  width: 100%;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+* {
+  font-family: var(--regular-text);
+  color: var(--text-h);
+  box-sizing: border-box;
+}

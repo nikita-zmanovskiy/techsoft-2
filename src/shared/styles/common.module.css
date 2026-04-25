@@ -1,0 +1,22 @@
+.form__submit_button {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #0475987d;
+    height: 40px;
+    font-size: var(--button-common-size);
+    transition: .5s ease all;
+    border-radius: 20px;
+    border: none;
+}
+.form__submit_button_active {
+    background-color: #00c3ff;
+    color: black;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+.form__submit_button_active:hover {
+    transform: translateY(5px);
+  
+    background-color: #00d5ff;
+}
+ 

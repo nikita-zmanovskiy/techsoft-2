@@ -1,0 +1,1 @@
+export {fetchAvailableCurrences} from '@/shared/api/mocks'

@@ -1,0 +1,21 @@
+.globalLoader__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: #000000;
+    transition: .5s ease opacity;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.globalLoader__overlay_hide {
+    opacity: 0;
+}
+.globalLoader__wrapper {
+
+
+}
