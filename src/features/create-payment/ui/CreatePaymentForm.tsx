@@ -25,10 +25,11 @@ export type PaymentProps = {
     isCurrencesSelect: boolean,
     setIsCurrencesSelect: (isCurrencesSelect: boolean) => void,
     isPaymentsSelect: boolean,
+    globalError:string | null,
     setIsPaymentsSelect: (isPaymentsSelect: boolean) => void
 }
 
-export const CreatePaymentForm = ({availableCountries,availablePayments, handleChangeCountry, availableCurrences,
+export const CreatePaymentForm = ({availableCountries,globalError, availablePayments, handleChangeCountry, availableCurrences,
     handleChangePayment,handleChangeTransfer, selectedCountry, 
     selectedPayment, selectedTransfer, handleSubmit,
     isCurrencesLoading, isPaymentsLoading, isCoutnriesLoading,
@@ -38,7 +39,7 @@ export const CreatePaymentForm = ({availableCountries,availablePayments, handleC
         <AnimateOnMount>
             <section className={styles.payment__wrapper}>
                     <h1 className={styles.payment__title}>Создание новой выплаты</h1>
-                    <p className={styles.payment__description}>Выберите все варианты чтобы продолжить</p>
+                    <p className={styles.payment__description}>{globalError || 'Выберите все варианты чтобы продолжить'}</p>
 
                     <form onSubmit={handleSubmit}>
                         <div className={styles.payment__option_element} >

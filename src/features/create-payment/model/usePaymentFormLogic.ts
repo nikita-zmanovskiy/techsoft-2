@@ -33,7 +33,7 @@ export type PaymentFormLogicReturn = {
     isCoutnriesLoading: boolean | null
     isCurrencesLoading: boolean | null
     isPaymentsLoading: boolean | null
-
+    globalError: string | null
     isCountriesSelect: boolean
     setIsCountriesSelect: React.Dispatch<React.SetStateAction<boolean>>
     isCurrencesSelect: boolean
@@ -60,6 +60,8 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
          [isPaymentsSelect, setIsPaymentsSelect] = useState<boolean>(false),
         [isCurrencesSelect, setIsCurrencesSelect] = useState<boolean>(false)
 
+    const [globalError, setGlobalError] = useState<string | null>(null)
+
 
     useEffect(():void => {
         const getInitionalCountries = async ():Promise<void> => {
@@ -84,7 +86,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
                 } else {
                     console.error("Произошла неизвестная ошибка", e)
                 }
-               
+                setGlobalError('Произошла ошибка запроса')
             } finally {
                 setIsCountriesLoading(false)
             }
@@ -140,7 +142,8 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
             } else {
                 console.error("Произошла неизвестная ошибка", e)
             }
-               
+            setGlobalError('Произошла ошибка запроса')
+            
         } finally {
             setIsCurrencesLoading(false)
         }
@@ -178,6 +181,8 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
             } else {
                 console.error("Произошла неизвестная ошибка", e)
             }
+            setGlobalError('Произошла ошибка запроса')
+
                
         } finally {
             setIsPaymentsLoading(false)
@@ -224,7 +229,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
     }
     
     return {availableCountries, handleChangeCountry,
-        availablePayments, availableCurrences, handleChangePayment,
+        availablePayments,globalError, availableCurrences, handleChangePayment,
         handleChangeTransfer, selectedCountry: selectedCountry ? selectedCountry.name : null, selectedPayment: selectedPayment ? selectedPayment.name : null, 
         selectedTransfer: selectedTransfer ? selectedTransfer.name : null, handleSubmit, isPaymentsLoading,
         isCurrencesLoading, isCoutnriesLoading, isCountriesSelect, setIsCountriesSelect,
