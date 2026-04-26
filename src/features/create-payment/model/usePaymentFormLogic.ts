@@ -117,18 +117,14 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
         } 
         if (!countryCode) {
             console.error("Код страны не найден")
+            setGlobalError('Произошла ошибка запроса')
             return
         } 
         const findCountry: Country | undefined = availableCountries?.find((country) => country.code === countryCode)
 
-        
-
-
         setIsCountriesSelect(false)
         handleClearAll()
         
-        
-
         setSelectedCountry({code: countryCode, name: findCountry?.name})
         setIsCurrencesLoading(true)
         try {
@@ -160,6 +156,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
        
         if (!countryCode) {
             console.error("Код страны не найден")
+            setGlobalError('Произошла ошибка запроса')
             return
         } 
         setIsCurrencesSelect(false)
@@ -206,7 +203,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
 
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void => {
         e.preventDefault()
-        if(selectedCountry.code && selectedPayment.code && selectedTransfer && availableCountries && availableCurrences) {
+        if(selectedCountry.code && selectedPayment.code && selectedTransfer.code && availableCountries && availableCurrences) {
           
             
             const findCountry: Country | null = availableCountries.find((country) => country.code === selectedCountry.code) || null,
@@ -223,6 +220,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
                 navigate(`/payment-results${result}`)
             } else {
                 console.error('Произошла неизвесная ошибка!')
+                setGlobalError('Произошла ошибка запроса')
             }
             
         }
