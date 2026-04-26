@@ -12,9 +12,8 @@ type UsedElementsFromStore = {
 }
 type NewPayment = () => void
 
-type PaymentDetail = {
+export type PaymentDetail = {
     name: string | null;
-
 }
 
 export type PaymentResultsReturn = {
@@ -33,8 +32,6 @@ export const usePaymentResults = ():PaymentResultsReturn => {
     const paramsCountry:string | null = urlParams.get('country'),
          paramsCurriency:string | null = urlParams.get('currency'),
          paramsPayment:string | null = urlParams.get('payment')
-
-    //URL - для возможности скидывать ссылки с данными, но реальная безопасность достигается только с беком
 
     const handleToHome = ():void => {
         resetAll()

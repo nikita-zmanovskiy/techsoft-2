@@ -1,14 +1,14 @@
-import type { Country, Currency, Payment } from "@/shared/types/common.types"
 import styles from '@/features/payment-results/ui/PaymentResult.module.css'
 import stylesCommon from '@/shared/styles/common.module.css'
 import { AnimateOnMount } from "@/shared/ul/UseAnimatePages/ui/useAnimatePagesElement"
+import type {PaymentDetail} from "@/features/payment-results/model/PaymentResults.ts";
 
 
 export type PaymentPropsType = {
     createNewPayment: () => void,
-    country: Country,
-    currency: Currency,
-    payment: Payment
+    country: PaymentDetail,
+    currency: PaymentDetail,
+    payment: PaymentDetail
 }
 
 export const PaymentResult = ({createNewPayment,country, currency, payment}: PaymentPropsType) => {

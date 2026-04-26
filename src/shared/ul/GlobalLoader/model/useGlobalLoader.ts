@@ -39,7 +39,7 @@ const useGlobalLoader = ():GlobalLoaderProps => {
                 }
             }
             
-            const cleanup: (() => any) | undefined = checkReady()
+            const cleanup: (() => void) | undefined = checkReady()
             
             return () => {
                 if (cleanup) cleanup()

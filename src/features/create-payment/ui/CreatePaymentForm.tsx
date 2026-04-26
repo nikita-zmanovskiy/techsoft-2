@@ -2,7 +2,7 @@ import type { Country, Currency, Payment } from "@/shared/types/common.types"
 import styles from '@/features/create-payment/ui/CreatePaymentForm.module.css'
 import arrow from '@/assets/arrow.svg'
 import stylesCommon from '@/shared/styles/common.module.css'
-import type { JSX } from "react"
+import type {FormEvent, JSX} from "react"
 import { CustomSelectElement } from "@/shared/ul/CustomSelect"
 import { AnimateOnMount } from "@/shared/ul/UseAnimatePages/ui/useAnimatePagesElement"
 
@@ -13,18 +13,18 @@ export type PaymentProps = {
     availableCurrences: Currency[] | null,
     handleChangePayment: (e: React.ChangeEvent<HTMLSelectElement>) => void,
     handleChangeTransfer: (e: React.ChangeEvent<HTMLSelectElement>) => void,
-    selectedCountry: string,
-    selectedPayment: string,
-    selectedTransfer: string,
-    handleSubmit:() => void,
-    isCurrencesLoading:boolean,
-    isPaymentsLoading:boolean,
-    isCoutnriesLoading:boolean,
-    isCountriesSelect:boolean,
+    selectedCountry: string | null,
+    selectedPayment: string | null,
+    selectedTransfer: string | null,
+    handleSubmit:(e: FormEvent<HTMLFormElement>) => void,
+    isCurrencesLoading:boolean | null,
+    isPaymentsLoading:boolean | null,
+    isCoutnriesLoading:boolean | null,
+    isCountriesSelect:boolean | null,
     setIsCountriesSelect: (isCountriesSelect:boolean) => void,
-    isCurrencesSelect: boolean,
+    isCurrencesSelect: boolean | null,
     setIsCurrencesSelect: (isCurrencesSelect: boolean) => void,
-    isPaymentsSelect: boolean,
+    isPaymentsSelect: boolean | null,
     globalError:string | null,
     setIsPaymentsSelect: (isPaymentsSelect: boolean) => void
 }

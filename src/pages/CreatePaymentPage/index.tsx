@@ -1,7 +1,8 @@
 import { CreatePaymentForm } from "@/features/create-payment";
-import { usePaymentFormLogic } from "@/features/create-payment/model/usePaymentFormLogic";
+import {type PaymentFormLogicReturn, usePaymentFormLogic} from "@/features/create-payment/model/usePaymentFormLogic";
+
 
 export const CreatePaymentPage = () => {
-    const props:any = usePaymentFormLogic()
+    const props:PaymentFormLogicReturn = usePaymentFormLogic()
     return (<CreatePaymentForm {...props}/>)
 }

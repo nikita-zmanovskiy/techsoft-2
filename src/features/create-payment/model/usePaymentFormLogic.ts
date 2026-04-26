@@ -5,7 +5,7 @@ import { usePaymentFormStore } from "./store"
 import { useNavigate } from "react-router-dom"
 import MemoryCache from "./cache"
 import UrlParams from "@/shared/lib/urlParams"
-import type { Country, Currency, MemoryCacheInstant, storeFunc } from "@/shared/types/common.types"
+import type {Country, Currency, MemoryCacheInstant, Payment, storeFunc} from "@/shared/types/common.types"
 
 
 //TODO: сделать если пришел пустой массив
@@ -48,9 +48,9 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
          [availableCurrences, setAvailableCurrences] = useState<Currency[] | null>(null),
          [availableCountries, setAvailableCountries] = useState<Country[] | null>(null)
 
-    const [selectedCountry, setSelectedCountry] = useState<any | null>(null),
-        [selectedPayment, setSelectedPayment] = useState<any | null>(null),
-        [selectedTransfer, setSelectedTransfer] = useState<any | null>(null)
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null),
+        [selectedPayment, setSelectedPayment] = useState<Currency | null>(null),
+        [selectedTransfer, setSelectedTransfer] = useState<Payment | null>(null)
 
     const [isCurrencesLoading, setIsCurrencesLoading] = useState<boolean | null>(false),
         [isPaymentsLoading, setIsPaymentsLoading] = useState<boolean | null>(false),
@@ -121,11 +121,10 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
             return
         } 
         const findCountry: Country | undefined = availableCountries?.find((country) => country.code === countryCode)
-
+        if(!findCountry?.name) return
         setIsCountriesSelect(false)
         handleClearAll()
-        
-        setSelectedCountry({code: countryCode, name: findCountry?.name})
+        setSelectedCountry({code: countryCode, name: findCountry.name})
         setIsCurrencesLoading(true)
         try {
             const responce:unknown = await fetchAvailableCurrences(countryCode)
@@ -163,8 +162,8 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
         setSelectedTransfer(null)
 
         const findCurrency:Currency | undefined = availableCurrences?.find((currency) => currency.code === countryCode)
-
-        setSelectedPayment({code: countryCode, name: findCurrency?.name})
+        if(!findCurrency?.name) return
+        setSelectedPayment({code: countryCode, name: findCurrency?.name })
 
         setIsPaymentsLoading(true)
         try {
@@ -197,17 +196,23 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
         }
 
         const findCurrency:availablePayment | undefined = availablePayments?.find((payment) => payment.code === countryCode)
-        setSelectedTransfer({code: countryCode, name: findCurrency?.name})
-        setIsPaymentsSelect(false)
+        if(findCurrency?.name && countryCode) {
+            setSelectedTransfer({code: countryCode, name: findCurrency.name})
+            setIsPaymentsSelect(false)
+        } else {
+            setGlobalError('Произошла ошибка')
+        }
+
     }
 
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void => {
         e.preventDefault()
-        if(selectedCountry.code && selectedPayment.code && selectedTransfer.code && availableCountries && availableCurrences) {
+        if(selectedCountry && selectedPayment && selectedTransfer &&
+            selectedCountry.code && selectedPayment.code && selectedTransfer.code && availableCountries && availableCurrences) {
           
             
-            const findCountry: Country | null = availableCountries.find((country) => country.code === selectedCountry.code) || null,
-                 findCurrency:Currency | null = availableCurrences.find((payment: any) => payment.code === selectedPayment.code ) || null
+            const findCountry: Country | null = availableCountries.find((country:Country) => country.code === selectedCountry.code) || null,
+                 findCurrency:Currency | null = availableCurrences.find((payment:Currency) => payment.code === selectedPayment.code ) || null
 
             if(findCountry && findCurrency) {
                 setForm({name: findCountry.name,code: selectedCountry.code}, 
@@ -216,7 +221,7 @@ export const usePaymentFormLogic = ():PaymentFormLogicReturn => {
                 const urlParams:UrlParams = new UrlParams()
                 urlParams.set('country', findCountry.name)
                 urlParams.set('currency', findCurrency.name)
-                const result:string = urlParams.set('payment', selectedTransfer)
+                const result:string = urlParams.set('payment', selectedTransfer.code)
                 navigate(`/payment-results${result}`)
             } else {
                 console.error('Произошла неизвесная ошибка!')

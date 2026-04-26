@@ -5,7 +5,7 @@ export const useAnimationPagesModel = ():AnimateProps => {
 
     const [isVisible, setIsVisible] = useState<boolean>(false)
 
-    useEffect((): (() => any) => {
+    useEffect((): (() => void) => {
         const timer:number = setTimeout(():void => setIsVisible(true), 10)
         return () => clearTimeout(timer)
     }, [])

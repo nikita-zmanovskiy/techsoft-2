@@ -3,9 +3,10 @@ import { router } from '../routes'
 import { Background } from '@/shared/ul/Background/ui/Background'
 
 import { GlobalLoaderComponent } from '@/shared/ul/GlobalLoader'
+import type {JSX} from "react";
 
 
-function App() {
+function App():JSX.Element {
    
   return (
     <main>
